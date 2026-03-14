@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SCREEN: LOGIN
+══════════════════════════════════════════════════════════════ -->
+<div id="screen-login" class="screen">
+  <div class="login-grid"></div>
+  <div class="login-glow"></div>
+
+  <div class="login-card">
+    <div class="login-card-top">
+      <div class="login-logo">◈</div>
+      <div class="login-title">MANAGEMENT SYSTEM</div>
+      <div class="login-sub">Secure Access Portal · v2.0</div>
+    </div>
+
+    <div class="login-body">
+      <div class="tab-row">
+        <button class="tab-btn active" data-tab="login" onclick="switchTab('login')">SIGN IN</button>
+        <button class="tab-btn" data-tab="register" onclick="switchTab('register')">REGISTER WITH TOKEN</button>
+      </div>
+
+      <!-- LOGIN TAB -->
+      <div class="tab-content active" data-tab="login">
+        <div id="login-error" class="error-msg"></div>
+        <div class="field">
+          <label>Username</label>
+          <input id="login-username" type="text" placeholder="Enter username" autocomplete="username">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button id="btn-login" class="btn btn-solid-accent btn-full">LOGIN →</button>
+        <div class="login-hint">
+          Default admin: <span>admin</span> / <span>Admin@1234</span>
+        </div>
+      </div>
+
+      <!-- REGISTER TAB -->
+      <div class="tab-content" data-tab="register">
+        <div id="reg-error" class="error-msg"></div>
+        <div class="field">
+          <label>Invite Token *</label>
+          <input id="reg-token" type="text" placeholder="Paste token from your manager">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Username *</label>
+            <input id="reg-username" placeholder="johndoe">
+          </div>
+          <div class="field">
+            <label>Full Name *</label>
+            <input id="reg-fullname" placeholder="John Doe">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Phone</label>
+            <input id="reg-phone" placeholder="233244000000">
+          </div>
+          <div class="field">
+            <label>WhatsApp</label>
+            <input id="reg-wa" placeholder="233244000000">
+          </div>
+        </div>
+        <div class="field">
+          <label>Password *</label>
+          <input id="reg-pwd" type="password" placeholder="Min 6 characters">
+        </div>
+        <button id="btn-register" class="btn btn-solid-accent btn-full">CREATE ACCOUNT →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     SCREEN: APP
+══════════════════════════════════════════════════════════════ -->
+<div id="screen-app" class="screen">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-logo">MGMT SYS</div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-user">
+      <span id="topbar-name" class="topbar-name"></span>
+      <span id="topbar-badge" class="role-badge"></span>
+      <button class="btn btn-red btn-sm" onclick="doLogout()">⎋ Logout</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="nav-section-label">Navigation</div>
+      <div id="sidebar-nav"></div>
+      <div class="sidebar-footer">Management System v2.0</div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- HOME PANEL -->
+      <div id="panel-home" class="panel"></div>
+
+      <!-- USERS PANEL -->
+      <div id="panel-users" class="panel"></div>
+
+      <!-- INVITES PANEL -->
+      <div id="panel-invites" class="panel"></div>
+
+      <!-- WHATSAPP PANEL -->
+      <div id="panel-whatsapp" class="panel"></div>
+
+      <!-- REQUESTS PANEL -->
+      <div id="panel-requests" class="panel"></div>
+
+      <!-- ROLES PANEL -->
+      <div id="panel-roles" class="panel"></div>
+
+      <!-- LOGS PANEL -->
+      <div id="panel-logs" class="panel"></div>
+
+      <!-- PROFILE PANEL -->
+      <div id="panel-profile" class="panel"></div>
+
+    </div><!-- /main -->
+  </div><!-- /app-body -->
+</div><!-- /screen-app -->
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════════════════════════ -->
+
+<!-- Add User -->
+<div id="modal-add-user" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">＋ Add New User</div>
+      <button class="modal-close" onclick="closeModal('modal-add-user')">×</button>
+    </div>
+    <div class="modal-body" id="modal-add-user-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-user')">Cancel</button>
+      <button class="btn btn-green" onclick="submitAddUser()">Create User</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change Role -->
+<div id="modal-change-role" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">↑ Change Role</div>
+      <button class="modal-close" onclick="closeModal('modal-change-role')">×</button>
+    </div>
+    <div class="modal-body" id="modal-change-role-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-change-role')">Cancel</button>
+      <button class="btn btn-amber" onclick="submitChangeRole()">Apply Change</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generate Invite -->
+<div id="modal-gen-invite" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">⊕ Generate Invite Token</div>
+      <button class="modal-close" onclick="closeModal('modal-gen-invite')">×</button>
+    </div>
+    <div class="modal-body" id="modal-gen-invite-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-gen-invite')">Close</button>
+      <button class="btn btn-accent" onclick="submitGenInvite()">Generate Token</button>
+    </div>
+  </div>
+</div>
+
+<!-- Send Invite via WhatsApp -->
+<div id="modal-send-invite" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📱 Send Invite via WhatsApp</div>
+      <button class="modal-close" onclick="closeModal('modal-send-invite')">×</button>
+    </div>
+    <div class="modal-body" id="modal-send-invite-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-send-invite')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitSendInvite()">📱 Open WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Request -->
+<div id="modal-req" class="modal-overlay">
+  <div class="modal" style="width:560px">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-req-title">＋ New Request</div>
+      <button class="modal-close" onclick="closeModal('modal-req')">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- Auto Request ID display (edit mode) -->
+      <div id="modal-req-id-field" style="display:none;margin-bottom:16px;padding:10px 14px;
+           background:rgba(0,255,178,.05);border:1px solid rgba(0,255,178,.2)">
+        <div style="font-size:10px;color:var(--text-2);margin-bottom:2px;letter-spacing:.1em">REQUEST ID (auto-generated)</div>
+        <div id="req-id-display" style="font-size:14px;font-weight:700;color:var(--accent);
+             font-family:var(--font-mono);letter-spacing:.06em"></div>
+        <input id="req-id" type="hidden">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>NUMBER *</label>
+          <input id="req-number" placeholder="e.g. 00123, INV-456">
+        </div>
+        <div class="field">
+          <label>COMPANY NAME *</label>
+          <input id="req-company" placeholder="e.g. Acme Corp Ltd">
+        </div>
+      </div>
+      <div class="field">
+        <label>DESCRIPTION</label>
+        <input id="req-desc" placeholder="Brief description of the request">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>STATUS</label>
+          <select id="req-status">
+            <option>Pending</option>
+            <option>In Review</option>
+            <option>Approved</option>
+            <option>Rejected</option>
+            <option>Completed</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>NOTES</label>
+          <input id="req-notes" placeholder="Optional notes…">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-req')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitRequest()">Save Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm -->
+<div id="modal-confirm" class="modal-overlay">
+  <div class="modal" style="width:400px">
+    <div class="modal-header">
+      <div class="modal-title" style="color:var(--red)">⚠ Confirm Action</div>
+      <button class="modal-close" onclick="closeModal('modal-confirm')">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="confirm-msg" class="confirm-msg"></div>
+      <div id="confirm-warn" class="confirm-warn"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-confirm')">Cancel</button>
+      <button class="btn btn-red" onclick="submitConfirm()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TOAST CONTAINER
+══════════════════════════════════════════════════════════════ -->
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="db.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
